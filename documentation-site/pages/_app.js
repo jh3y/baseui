@@ -19,18 +19,21 @@ import {trackPageView} from '../helpers/ga';
 import '../prism-coy.css';
 
 export default class MyApp extends App {
+  static async getInitialProps({ctx}) {
+    return {path: ctx.asPath};
+  }
   componentDidMount() {
     Router.onRouteChangeComplete = url => {
       trackPageView(url);
     };
   }
   render() {
-    const {Component, pageProps} = this.props;
+    const {Component, pageProps, path} = this.props;
     return (
       <Container>
         <StyletronProvider value={styletron}>
           <ThemeProvider theme={LightTheme}>
-            <Component {...pageProps} />
+            <Component {...pageProps} path={path} />
             <Block marginBottom="300px" />
           </ThemeProvider>
         </StyletronProvider>
