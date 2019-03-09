@@ -19,8 +19,12 @@ import {trackPageView} from '../helpers/ga';
 import '../prism-coy.css';
 
 export default class MyApp extends App {
-  static async getInitialProps({ctx}) {
-    return {path: ctx.asPath};
+  static async getInitialProps({Component, ctx}) {
+    let pageProps = {};
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx);
+    }
+    return {path: ctx.asPath, pageProps};
   }
   componentDidMount() {
     Router.onRouteChangeComplete = url => {
