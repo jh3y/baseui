@@ -10,56 +10,33 @@ LICENSE file in the root directory of this source tree.
 import React, {Children} from 'react';
 
 import {LocaleContext} from '../locale/index.js';
-import {ChevronRight} from '../icon/index.js';
 import type {BreadcrumbsPropsT} from './types.js';
 import type {BreadcrumbLocaleT} from './locale.js';
-import {
-  StyledRoot,
-  StyledSeparator,
-  StyledList,
-  StyledListItem,
-} from './styled-components.js';
-import {getOverrides, mergeOverrides} from '../helpers/overrides.js';
+import {StyledRoot, StyledList, StyledListItem} from './styled-components.js';
+import {getOverrides} from '../helpers/overrides.js';
 
 type LocaleT = {|locale?: BreadcrumbLocaleT|};
 export function BreadcrumbsRoot(props: {|...BreadcrumbsPropsT, ...LocaleT|}) {
   const {overrides = {}} = props;
-  const numChildren = Children.count(props.children);
   const childrenWithSeparators = [];
 
   const [Root, baseRootProps] = getOverrides(overrides.Root, StyledRoot);
-  const [Icon, baseIconProps] = getOverrides(overrides.Icon, ChevronRight);
   const [List, baseListProps] = getOverrides(overrides.List, StyledList);
   const [ListItem, baseListItemProps] = getOverrides(
     overrides.ListItem,
     StyledListItem,
   );
-  const [Separator, baseSeparatorProps] = getOverrides(
-    overrides.Separator,
-    StyledSeparator,
-  );
-
-  const iconOverrides = mergeOverrides(
-    {Svg: {style: {verticalAlign: 'text-bottom'}}},
-    // $FlowFixMe
-    baseIconProps && baseIconProps.overrides,
-  );
-  // $FlowFixMe
-  baseIconProps.overrides = iconOverrides;
 
   Children.forEach(props.children, (child, index) => {
     childrenWithSeparators.push(
       <ListItem
         key={`breadcrumb-item-${index}`}
         $itemIndex={index}
+        $separator={props.separator}
+        $separatorStyles={props.separatorStyles}
         {...baseListItemProps}
       >
         {child}
-        {index !== numChildren - 1 && (
-          <Separator {...baseSeparatorProps} key={`separator-${index}`}>
-            <Icon {...baseIconProps} />
-          </Separator>
-        )}
       </ListItem>,
     );
   });
@@ -87,6 +64,8 @@ function Breadcrumbs(props: BreadcrumbsPropsT) {
 
 Breadcrumbs.defaultProps = {
   overrides: {},
+  separator: '>',
+  separatorStyles: {},
 };
 
 export default Breadcrumbs;

@@ -25,10 +25,23 @@ export const StyledList = styled<{}>('ol', ({$theme}) => {
   };
 });
 
-export const StyledListItem = styled<{}>('li', ({$theme}) => {
+export const StyledListItem = styled<{}>('li', props => {
+  const {$theme, $itemIndex, $separator, $separatorStyles} = props;
   return {
     display: 'inline-block',
     ...$theme.typography.font450,
+    ...($itemIndex !== 0 && {
+      ':before': {
+        color: $theme.colors.mono700,
+        content: `'${$separator}'`,
+        marginLeft: $theme.sizing.scale400,
+        marginRight: $theme.sizing.scale400,
+        ...$theme.typography.font450,
+        ...(typeof $separatorStyles === 'function'
+          ? $separatorStyles(props)
+          : $separatorStyles),
+      },
+    }),
   };
 });
 

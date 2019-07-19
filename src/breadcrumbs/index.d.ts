@@ -4,14 +4,16 @@ import {Override} from '../overrides';
 
 export interface BreadcrumbsOverrides {
   Root?: Override<any>;
-  Separator?: Override<any>;
-  Icon?: Override<any>;
+  ListItem?: Override<any>;
+  List?: Override<any>;
 }
 
 export interface BreadcrumbsProps {
   children?: React.ReactNode;
   overrides?: BreadcrumbsOverrides;
   ariaLabel?: string;
+  separator?: string;
+  separatorStyles?: {} | (({}) => {});
 }
 
 export const Breadcrumbs: React.FC<BreadcrumbsProps>;
