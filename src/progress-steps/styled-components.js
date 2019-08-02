@@ -20,6 +20,7 @@ export const StyledProgressSteps = styled<{}>('ol', ({$theme}) => {
     paddingRight: $theme.sizing.scale500,
     paddingLeft: $theme.sizing.scale500,
     paddingBottom: $theme.sizing.scale300,
+    textAlign: $theme.direction === 'rtl' ? 'right' : 'left',
   };
 });
 
